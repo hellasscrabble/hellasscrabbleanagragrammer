@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eaf4fc">
+  <meta name="description" content="Έλεγχος ελληνικών λέξεων και αναγραμματισμός για το αγωνιστικό Σκραμπλ.">
+  <link rel="canonical" href="https://hellasscrabbleanagrammer.gr/">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Αναγραμματισμός λέξεων - Ελληνικό Αγωνιστικό Σκραμπλ</title>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="brand-header">
+      <img class="brand-logo" src="./assets/ela-scrabble-logo.png" alt="ΕΛΑ Ελληνικό Αγωνιστικό Σκραμπλ">
+      <div class="brand-title">
+        <p class="eyebrow">Ελληνικό Αγωνιστικό Σκραμπλ</p>
+        <h1>Αναγραμματισμός λέξεων</h1>
+        <p class="subtitle">Έλεγχος λέξεων και αναγραμματισμοί για το παιχνίδι.</p>
+      </div>
+      <section class="source-card" aria-label="Πηγή λεξικού">
+        <a class="cover-link" href="https://www.openbook.gr/oi-lexeis-2-8-grammaton-scrabble/" target="_blank" rel="noopener noreferrer" aria-label="Άνοιγμα της πηγής του λεξικού">
+          <img class="book-cover" src="./assets/oi-lekseis-2-8-grammaton-scrabble.jpg" alt="Εξώφυλλο του λεξικού Οι λέξεις 2-8 γραμμάτων">
+        </a>
+        <div>
+          <p class="source-label">Πηγή λεξικού</p>
+          <a class="source-title" href="https://www.openbook.gr/oi-lexeis-2-8-grammaton-scrabble/" target="_blank" rel="noopener noreferrer">«Οι λέξεις 2-8 γραμμάτων»</a>
+          <p class="source-copy">Χρήστος Τζήμας, Γιάννης Παπαβλασίου, Μπάμπης Τοπάλογλου · Άδεια CC BY-NC-ND</p>
+        </div>
+      </section>
+    </header>
+
+    <section class="panel input-panel" aria-labelledby="input-title">
+      <h2 id="input-title">Έλεγχος και αναγραμματισμός</h2>
+      <p class="hint">Γράψε μία λέξη για έλεγχο.<br>Αναγραμματισμός από 2–8 γράμματα.<br>Το <strong>*</strong> χρησιμοποιείται ως μπαλαντέρ στον αναγραμματισμό (έως 2 <strong>*</strong>).</p>
+      <label class="visually-hidden" for="word-input">Λέξη ή γράμματα</label>
+      <input id="word-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="π.χ. ΚΑΣΤΟΡΑΣ ή ΑΒΓ*" aria-describedby="input-status">
+      <div class="actions">
+        <button id="check-button" class="button button-primary" type="button">Έλεγχος λέξης</button>
+        <button id="anagram-button" class="button button-primary" type="button">Αναγραμματισμός</button>
+        <button id="meaning-button" class="button button-secondary" type="button">Ερμηνεία</button>
+        <button id="multiple-check-button" class="button button-secondary" type="button">Έλεγχος πολλών λέξεων</button>
+      </div>
+      <div class="actions extra-actions">
+        <button id="starts-with-button" class="button button-secondary" type="button">Αρχίζουν από</button>
+        <button id="ends-with-button" class="button button-secondary" type="button">Τελειώνουν σε</button>
+        <button id="contains-button" class="button button-secondary" type="button">Περιέχουν</button>
+        <button id="fixed-letter-button" class="button button-secondary" type="button">Αναγραμματισμός με σταθερό γράμμα</button>
+      </div>
+      <p id="word-result" class="word-result" aria-live="polite"></p>
+      <p id="input-status" class="status" role="status" aria-live="polite">Φόρτωση λεξικού…</p>
+    </section>
+
+    <section id="anagram-panel" class="panel results-panel" aria-labelledby="results-title" hidden>
+      <div class="results-heading">
+        <h2 id="results-title">Αποτελέσματα</h2>
+        <span id="result-count" class="result-count"></span>
+      </div>
+      <div id="results" class="results" aria-live="polite"></div>
+    </section>
+
+    <footer class="site-footer">
+      <p>Η λίστα λέξεων προέρχεται από το λεξικό <a href="https://www.openbook.gr/oi-lexeis-2-8-grammaton-scrabble/" target="_blank" rel="noopener noreferrer">«Οι λέξεις 2-8 γραμμάτων»</a> των Χρήστου Τζήμα, Γιάννη Παπαβλασίου και Μπάμπη Τοπάλογλου. Η πηγή αναφέρει άδεια Creative Commons BY-NC-ND.</p>
+      <p>Το Σκραμπλ (Scrabble) είναι προϊόν και κατατεθειμένο σήμα της Mattel Inc. Στην ελληνική αγορά διανέμεται από τη Mattel Inc.</p>
+      <p>Οι λέξεις ακολουθούν τους όρους αποδοχής του Ελληνικού Αγωνιστικού Σκραμπλ, όπως αυτοί είναι αναρτημένοι στην ιστοσελίδα του <a href="https://hellasscrable.blogspot.com/" target="_blank" rel="noopener noreferrer">Ελληνικού Αγωνιστικού Σκραμπλ (ΕΛΑ ΣΚΡΑΜΠΛ)</a>.</p>
+    </footer>
+  </main>
+  <script src="./app.js" defer></script>
+</body>
+</html>
