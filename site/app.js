@@ -102,7 +102,9 @@ function renderGroupedResults(groups, title, emptyMessage) {
         const wordElement = document.createElement("span");
         wordElement.textContent = word;
         wordElement.className = "word-with-meaning";
-        wordElement.title = meaning;
+        if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+          wordElement.title = meaning;
+        }
         wordElement.tabIndex = 0;
         wordElement.setAttribute("role", "button");
         wordElement.setAttribute("aria-label", `${word}, πάτησε για να δεις την ερμηνεία`);
@@ -125,7 +127,20 @@ function renderGroupedResults(groups, title, emptyMessage) {
           meaningPopup.hidden = !shouldOpen;
           wordElement.setAttribute("aria-expanded", String(shouldOpen));
         };
-        wordElement.addEventListener("click", toggleMeaning);
+        let suppressSyntheticClick = false;
+        wordElement.addEventListener("pointerup", (event) => {
+          if (event.pointerType !== "touch") return;
+          toggleMeaning();
+          suppressSyntheticClick = true;
+          window.setTimeout(() => { suppressSyntheticClick = false; }, 500);
+        });
+        wordElement.addEventListener("click", () => {
+          if (suppressSyntheticClick) {
+            suppressSyntheticClick = false;
+            return;
+          }
+          toggleMeaning();
+        });
         wordElement.addEventListener("keydown", (event) => {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
