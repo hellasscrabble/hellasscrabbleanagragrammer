@@ -4,6 +4,14 @@ const DICTIONARY_URL = "./data/words.tsv";
 const SOURCE_URL = "https://www.openbook.gr/oi-lexeis-2-8-grammaton-scrabble/";
 const ALPHABET = Array.from("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ");
 const GREEK_INDEX = new Map(ALPHABET.map((letter, index) => [letter, index]));
+const LATIN_TO_GREEK_KEY = new Map(Object.entries({
+  a: "α", b: "β", c: "ψ", d: "δ", e: "ε", f: "φ", g: "γ", h: "η", i: "ι",
+  j: "ξ", k: "κ", l: "λ", m: "μ", n: "ν", o: "ο", p: "π", q: ";", r: "ρ",
+  s: "σ", t: "τ", u: "θ", v: "ω", w: "ς", x: "χ", y: "υ", z: "ζ",
+  A: "Α", B: "Β", C: "Ψ", D: "Δ", E: "Ε", F: "Φ", G: "Γ", H: "Η", I: "Ι",
+  J: "Ξ", K: "Κ", L: "Λ", M: "Μ", N: "Ν", O: "Ο", P: "Π", Q: ";", R: "Ρ",
+  S: "Σ", T: "Τ", U: "Θ", V: "Ω", W: "Σ", X: "Χ", Y: "Υ", Z: "Ζ",
+}));
 
 const input = document.querySelector("#word-input");
 const checkButton = document.querySelector("#check-button");
@@ -171,7 +179,9 @@ function checkWord() {
 
   const word = normalize(raw);
   if (dictionary.has(word)) showWordResult("✓ Υπάρχει στη λίστα λέξεων", "success");
-  else showWordResult("✗ Δεν υπάρχει στη λίστα λέξεων", "error");
+  else if ([...word].length > 8) {
+    showWordResult("✗ Δεν υπάρχει στη λίστα λέξεων. Η λέξη είναι μεγαλύτερη από 8 γράμματα.", "error");
+  } else showWordResult("✗ Δεν υπάρχει στη λίστα λέξεων", "error");
 }
 
 function showMeaning() {
@@ -206,7 +216,7 @@ function checkMultipleWords() {
     return showWordResult("Τουλάχιστον μία λέξη δε βρίσκεται στη λίστα", "error");
   }
   if (words.length === 2) {
-    return showWordResult("Και Οι δύο λέξεις βρίσκονται στη λίστα", "success");
+    return showWordResult("Και οι δύο λέξεις βρίσκονται στη λίστα", "success");
   }
   return showWordResult("Όλες οι επιλεγμένες λέξεις βρίσκονται στη λίστα", "success");
 }
@@ -433,7 +443,21 @@ fixedLetterButton.addEventListener("click", findFixedLetterAnagrams);
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") checkWord();
 });
-input.addEventListener("input", clearWordResult);
+input.addEventListener("input", (event) => {
+  if (!event.isComposing) {
+    const original = input.value;
+    const cursorStart = input.selectionStart ?? original.length;
+    const cursorEnd = input.selectionEnd ?? cursorStart;
+    const convert = (value) => [...value].map((char) => LATIN_TO_GREEK_KEY.get(char) ?? char).join("");
+    const converted = convert(original);
+    if (converted !== original) {
+      input.value = converted;
+      input.setSelectionRange(convert(original.slice(0, cursorStart)).length,
+        convert(original.slice(0, cursorEnd)).length);
+    }
+  }
+  clearWordResult();
+});
 // Let visitors select the displayed words and meanings, while blocking clipboard actions.
 document.addEventListener("copy", (event) => event.preventDefault());
 document.addEventListener("cut", (event) => event.preventDefault());
