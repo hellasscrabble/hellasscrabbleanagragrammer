@@ -62,7 +62,10 @@ h2 { margin: 0; font-size: 1.15rem; }
 .length-row { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 12px; padding: 10px 12px; border-radius: 9px; background: var(--surface-blue); border: 1px solid #e0edf7; }
 .length-label { color: var(--blue); font-weight: 800; white-space: nowrap; }
 .word-list { line-height: 1.75; overflow-wrap: anywhere; }
-.word-with-meaning { cursor: help; text-decoration: underline dotted #7894aa; text-underline-offset: 3px; }
+.word-entry { position: relative; display: inline-block; }
+.word-with-meaning { cursor: pointer; text-decoration: underline dotted #7894aa; text-underline-offset: 3px; user-select: text; }
+.word-with-meaning:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 2px; }
+.word-meaning-popup { position: absolute; z-index: 5; top: calc(100% + 4px); left: 0; width: max-content; max-width: min(340px, 80vw); padding: 8px 10px; border: 1px solid #e2c85c; border-radius: 8px; background: #fff8d8; color: var(--blue-dark); box-shadow: 0 4px 14px #214b7026; font-size: .9rem; line-height: 1.45; white-space: normal; }
 .empty-results { margin: 0; color: var(--muted); }
 .site-footer { padding: 6px 4px; color: var(--muted); font-size: .78rem; line-height: 1.5; }
 .site-footer p { margin: 0; }
@@ -83,4 +86,5 @@ h2 { margin: 0; font-size: 1.15rem; }
   .button-secondary { grid-column: 1 / -1; }
   .extra-actions .button-secondary { grid-column: auto; }
   .length-row { grid-template-columns: 1fr; gap: 4px; }
+  .word-meaning-popup { position: fixed; top: auto; right: 12px; bottom: 12px; left: 12px; width: auto; max-width: none; font-size: 1rem; }
 }

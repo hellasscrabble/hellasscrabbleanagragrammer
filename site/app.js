@@ -97,13 +97,44 @@ function renderGroupedResults(groups, title, emptyMessage) {
       if (index > 0) list.append(document.createTextNode(" · "));
       const meaning = dictionary.get(word);
       if (meaning) {
+        const entry = document.createElement("span");
+        entry.className = "word-entry";
         const wordElement = document.createElement("span");
         wordElement.textContent = word;
         wordElement.className = "word-with-meaning";
         wordElement.title = meaning;
         wordElement.tabIndex = 0;
-        wordElement.setAttribute("aria-label", `${word}: ${meaning}`);
-        list.append(wordElement);
+        wordElement.setAttribute("role", "button");
+        wordElement.setAttribute("aria-label", `${word}, πάτησε για να δεις την ερμηνεία`);
+        wordElement.setAttribute("aria-expanded", "false");
+
+        const meaningPopup = document.createElement("span");
+        meaningPopup.className = "word-meaning-popup";
+        meaningPopup.textContent = meaning;
+        meaningPopup.hidden = true;
+
+        const closeOtherMeanings = () => {
+          results.querySelectorAll(".word-meaning-popup").forEach((popup) => {
+            popup.hidden = true;
+            popup.previousElementSibling?.setAttribute("aria-expanded", "false");
+          });
+        };
+        const toggleMeaning = () => {
+          const shouldOpen = meaningPopup.hidden;
+          closeOtherMeanings();
+          meaningPopup.hidden = !shouldOpen;
+          wordElement.setAttribute("aria-expanded", String(shouldOpen));
+        };
+        wordElement.addEventListener("click", toggleMeaning);
+        wordElement.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            toggleMeaning();
+          }
+        });
+
+        entry.append(wordElement, meaningPopup);
+        list.append(entry);
       } else {
         list.append(document.createTextNode(word));
       }
@@ -392,6 +423,13 @@ input.addEventListener("input", clearWordResult);
 document.addEventListener("copy", (event) => event.preventDefault());
 document.addEventListener("cut", (event) => event.preventDefault());
 document.addEventListener("paste", (event) => event.preventDefault());
+document.addEventListener("click", (event) => {
+  if (event.target.closest?.(".word-entry")) return;
+  results.querySelectorAll(".word-meaning-popup").forEach((popup) => {
+    popup.hidden = true;
+    popup.previousElementSibling?.setAttribute("aria-expanded", "false");
+  });
+});
 loadDictionary();
 
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
