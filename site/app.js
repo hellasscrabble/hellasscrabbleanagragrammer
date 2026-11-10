@@ -31,6 +31,7 @@ const resultCount = document.querySelector("#result-count");
 
 let dictionary = new Map();
 let ready = false;
+let inputConversionTimer = null;
 
 function normalize(value) {
   return value.trim().toLocaleUpperCase("el-GR").replace(/ς/g, "Σ")
@@ -62,14 +63,28 @@ function convertInputToGreek() {
   const original = input.value;
   const cursorStart = input.selectionStart ?? original.length;
   const cursorEnd = input.selectionEnd ?? cursorStart;
-  const converted = convertLatinKeyboard(original);
+  const converted = convertLatinKeyboard(original).toLocaleUpperCase("el-GR");
   if (converted === original) return;
 
   input.value = converted;
   input.setSelectionRange(
-    convertLatinKeyboard(original.slice(0, cursorStart)).length,
-    convertLatinKeyboard(original.slice(0, cursorEnd)).length,
+    convertLatinKeyboard(original.slice(0, cursorStart)).toLocaleUpperCase("el-GR").length,
+    convertLatinKeyboard(original.slice(0, cursorEnd)).toLocaleUpperCase("el-GR").length,
   );
+}
+
+function scheduleInputConversion() {
+  if (inputConversionTimer !== null) window.clearTimeout(inputConversionTimer);
+  inputConversionTimer = window.setTimeout(() => {
+    inputConversionTimer = null;
+    convertInputToGreek();
+  }, 250);
+}
+
+function finalizeInputConversion() {
+  if (inputConversionTimer !== null) window.clearTimeout(inputConversionTimer);
+  inputConversionTimer = null;
+  convertInputToGreek();
 }
 
 function showWordResult(message, kind = "info") {
@@ -116,7 +131,7 @@ function renderGroupedResults(groups, title, emptyMessage) {
     row.className = "length-row";
     const heading = document.createElement("span");
     heading.className = "length-label";
-    heading.textContent = `${length} γράμματα`;
+    heading.textContent = `${length} γράμματα (${groups.get(length).length.toLocaleString("el-GR")})`;
     const list = document.createElement("span");
     list.className = "word-list";
     words.forEach((word, index) => {
@@ -187,6 +202,7 @@ function renderGroupedResults(groups, title, emptyMessage) {
 }
 
 function checkWord() {
+  finalizeInputConversion();
   const raw = input.value.trim();
   if (!raw) return showWordResult("Γράψε πρώτα μια λέξη.");
   if (raw.split(/\s+/).length > 1) {
@@ -203,6 +219,7 @@ function checkWord() {
 }
 
 function showMeaning() {
+  finalizeInputConversion();
   const raw = input.value.trim();
   if (!raw) return showWordResult("Γράψε πρώτα μια λέξη.");
   if (raw.split(/\s+/).length > 1) {
@@ -219,6 +236,7 @@ function showMeaning() {
 }
 
 function checkMultipleWords() {
+  finalizeInputConversion();
   const raw = input.value.trim();
   if (!raw) return showWordResult("Γράψε τις λέξεις χωρισμένες με κενά.");
   const words = raw.split(/\s+/);
@@ -240,6 +258,7 @@ function checkMultipleWords() {
 }
 
 function searchByLetters(mode) {
+  finalizeInputConversion();
   clearOutput();
   const raw = input.value.trim();
   const letters = normalize(raw);
@@ -279,6 +298,7 @@ function searchByLetters(mode) {
 }
 
 function findFixedLetterAnagrams() {
+  finalizeInputConversion();
   clearOutput();
   const raw = input.value.trim();
   const query = normalize(raw);
@@ -366,6 +386,7 @@ function findFixedLetterAnagrams() {
 }
 
 function findAnagrams() {
+  finalizeInputConversion();
   clearOutput();
   const raw = input.value.trim();
   const query = normalize(raw);
@@ -461,22 +482,12 @@ fixedLetterButton.addEventListener("click", findFixedLetterAnagrams);
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") checkWord();
 });
-input.addEventListener("beforeinput", (event) => {
-  if (event.inputType !== "insertText" || !event.data || event.isComposing) return;
-  const converted = convertLatinKeyboard(event.data);
-  if (converted === event.data) return;
-
-  event.preventDefault();
-  input.setRangeText(converted, input.selectionStart, input.selectionEnd, "end");
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-});
 input.addEventListener("input", (event) => {
-  if (!event.isComposing) convertInputToGreek();
   clearWordResult();
+  if (!event.isComposing) scheduleInputConversion();
 });
 input.addEventListener("compositionend", () => {
-  convertInputToGreek();
-  clearWordResult();
+  scheduleInputConversion();
 });
 // Let visitors select the displayed words and meanings, while blocking clipboard actions.
 document.addEventListener("copy", (event) => event.preventDefault());
