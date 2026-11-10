@@ -59,7 +59,7 @@ h2 { margin: 0; font-size: 1.15rem; }
 .results-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
 .result-count { color: var(--muted); font-size: .88rem; }
 .results { display: grid; gap: 8px; }
-.length-row { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 12px; padding: 10px 12px; border-radius: 9px; background: var(--surface-blue); border: 1px solid #e0edf7; }
+.length-row { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 12px; padding: 10px 12px; border-radius: 9px; background: var(--surface-blue); border: 1px solid #e0edf7; }
 .length-label { color: var(--blue); font-weight: 800; white-space: nowrap; }
 .word-list { line-height: 1.75; overflow-wrap: anywhere; }
 .word-entry { position: relative; display: inline-block; }
