@@ -54,6 +54,24 @@ function isGreekInput(value, allowStars = false) {
   return true;
 }
 
+function convertLatinKeyboard(value) {
+  return [...value].map((char) => LATIN_TO_GREEK_KEY.get(char) ?? char).join("");
+}
+
+function convertInputToGreek() {
+  const original = input.value;
+  const cursorStart = input.selectionStart ?? original.length;
+  const cursorEnd = input.selectionEnd ?? cursorStart;
+  const converted = convertLatinKeyboard(original);
+  if (converted === original) return;
+
+  input.value = converted;
+  input.setSelectionRange(
+    convertLatinKeyboard(original.slice(0, cursorStart)).length,
+    convertLatinKeyboard(original.slice(0, cursorEnd)).length,
+  );
+}
+
 function showWordResult(message, kind = "info") {
   wordResult.textContent = message;
   wordResult.className = `word-result ${kind}`;
@@ -443,19 +461,21 @@ fixedLetterButton.addEventListener("click", findFixedLetterAnagrams);
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") checkWord();
 });
+input.addEventListener("beforeinput", (event) => {
+  if (event.inputType !== "insertText" || !event.data || event.isComposing) return;
+  const converted = convertLatinKeyboard(event.data);
+  if (converted === event.data) return;
+
+  event.preventDefault();
+  input.setRangeText(converted, input.selectionStart, input.selectionEnd, "end");
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+});
 input.addEventListener("input", (event) => {
-  if (!event.isComposing) {
-    const original = input.value;
-    const cursorStart = input.selectionStart ?? original.length;
-    const cursorEnd = input.selectionEnd ?? cursorStart;
-    const convert = (value) => [...value].map((char) => LATIN_TO_GREEK_KEY.get(char) ?? char).join("");
-    const converted = convert(original);
-    if (converted !== original) {
-      input.value = converted;
-      input.setSelectionRange(convert(original.slice(0, cursorStart)).length,
-        convert(original.slice(0, cursorEnd)).length);
-    }
-  }
+  if (!event.isComposing) convertInputToGreek();
+  clearWordResult();
+});
+input.addEventListener("compositionend", () => {
+  convertInputToGreek();
   clearWordResult();
 });
 // Let visitors select the displayed words and meanings, while blocking clipboard actions.
