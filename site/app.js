@@ -1,6 +1,6 @@
 "use strict";
 
-const DICTIONARY_URL = "./data/words.tsv?v=20261111-2";
+const DICTIONARY_URL = "./data/words.tsv?v=20261112-1";
 const SOURCE_URL = "https://www.openbook.gr/oi-lexeis-2-8-grammaton-scrabble/";
 const ALPHABET = Array.from("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ");
 const GREEK_INDEX = new Map(ALPHABET.map((letter, index) => [letter, index]));
@@ -212,10 +212,14 @@ function checkWord() {
   if (!ready) return showWordResult("Το λεξικό φορτώνεται ακόμη. Περίμενε λίγο.");
 
   const word = normalize(raw);
-  if (dictionary.has(word)) showWordResult("✓ Υπάρχει στη λίστα λέξεων", "success");
-  else if ([...word].length > 8) {
-    showWordResult("✗ Δεν υπάρχει στη λίστα λέξεων. Η λέξη είναι μεγαλύτερη από 8 γράμματα.", "error");
-  } else showWordResult("✗ Δεν υπάρχει στη λίστα λέξεων", "error");
+  if ([...word].length > 10) {
+    return showWordResult("Γράψτε λέξη για έλεγχο έως 10 γράμματα.", "error");
+  }
+  if (dictionary.has(word)) {
+    showWordResult(`✓ Η λέξη «${word}» βρέθηκε στη λίστα.`, "success");
+  } else {
+    showWordResult(`✗ Η λέξη «${word}» δεν βρέθηκε στη λίστα. Συμβουλευτείτε τα λεξικά.`, "error");
+  }
 }
 
 function showMeaning() {
