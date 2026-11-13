@@ -1,6 +1,6 @@
 "use strict";
 
-const DICTIONARY_URL = "./data/words.tsv?v=20261113-5";
+const DICTIONARY_URL = "./data/words.tsv?v=20261114-1";
 const SOURCE_URL = "https://www.openbook.gr/oi-lexeis-2-8-grammaton-scrabble/";
 const ALPHABET = Array.from("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ");
 const GREEK_INDEX = new Map(ALPHABET.map((letter, index) => [letter, index]));
