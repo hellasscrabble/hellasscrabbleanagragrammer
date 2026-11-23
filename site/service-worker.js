@@ -1,9 +1,12 @@
-const CACHE_NAME = "hellas-scrabble-anagrammer-v37";
+const CACHE_NAME = "hellas-scrabble-anagrammer-v39";
 const APP_FILES = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./practice.html",
+  "./practice.js",
+  "./practice.css",
   "./manifest.webmanifest",
   "./assets/ela-scrabble-logo.png",
   "./assets/oi-lekseis-2-8-grammaton-scrabble.jpg",

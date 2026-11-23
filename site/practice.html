@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eaf4fc">
+  <link rel="icon" href="./assets/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./practice.css">
+  <title>Προπονήσου - Ελληνικό Αγωνιστικό Σκραμπλ</title>
+</head>
+<body>
+  <main class="app-shell practice-shell">
+    <header class="practice-header">
+      <img class="brand-logo" src="./assets/ela-scrabble-logo.png" alt="ΕΛΑ Ελληνικό Αγωνιστικό Σκραμπλ">
+      <div>
+        <p class="eyebrow">Ελληνικό Αγωνιστικό Σκραμπλ</p>
+        <h1>Προπονήσου</h1>
+        <p class="subtitle">Βρες μία λέξη που χρησιμοποιεί όλα τα γράμματα.</p>
+      </div>
+    </header>
+
+    <section class="panel practice-panel" aria-labelledby="practice-title">
+      <h2 id="practice-title">Ρυθμίσεις γραμμάτων</h2>
+      <div class="practice-options">
+        <label for="letter-count">Αριθμός γραμμάτων
+          <select id="letter-count">
+            <option value="7">7 γράμματα</option>
+            <option value="8">8 γράμματα</option>
+          </select>
+        </label>
+        <label for="wildcard-count">Μπαλαντέρ
+          <select id="wildcard-count">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
+        </label>
+      </div>
+      <div class="practice-actions">
+        <button id="new-rack-button" class="button button-primary" type="button" disabled>Νέα γράμματα</button>
+        <button id="shuffle-button" class="button button-secondary" type="button" disabled>Ανακάτεμα</button>
+      </div>
+      <div id="letter-rack" class="letter-rack" aria-label="Γράμματα για αναγραμματισμό" aria-live="polite"></div>
+      <p id="practice-status" class="status" role="status" aria-live="polite">Φόρτωση λεξικού…</p>
+
+      <form id="answer-form" class="answer-form" hidden>
+        <label for="practice-answer">Η λέξη που βρήκες</label>
+        <div class="answer-controls">
+          <input id="practice-answer" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Γράψε τη λέξη">
+          <button class="button button-primary" type="submit">Έλεγχος λέξης</button>
+        </div>
+        <p id="answer-result" class="word-result" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+  <script src="./practice.js" defer></script>
+</body>
+</html>

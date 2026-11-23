@@ -1,0 +1,25 @@
+.practice-shell { max-width: 760px; }
+.practice-header { display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 16px; text-align: center; }
+.practice-header .brand-logo { width: 76px; height: 76px; }
+.practice-panel h2 { text-align: center; }
+.practice-options { display: flex; justify-content: center; gap: 16px; margin-top: 20px; }
+.practice-options label, .answer-form > label { display: grid; gap: 7px; color: var(--blue-dark); font-weight: 700; }
+.practice-options select, #practice-answer { min-height: 46px; border: 1px solid #a9c4db; border-radius: 9px; padding: 8px 12px; background: var(--surface-blue); color: var(--blue-dark); font: inherit; }
+.practice-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.letter-rack { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; min-height: 78px; margin: 22px 0 6px; }
+.rack-tile { display: grid; place-items: center; width: clamp(42px, 9vw, 58px); height: clamp(48px, 10vw, 64px); border: 1px solid #e4ca67; border-radius: 9px; background: var(--yellow); color: var(--blue-dark); box-shadow: 0 2px 4px #214b7018; font-size: clamp(1.35rem, 4vw, 1.8rem); font-weight: 800; user-select: none; }
+.rack-tile.is-wildcard { background: #e4f0fa; border-color: #bfd6e9; }
+.practice-panel > .status { text-align: center; }
+.answer-form { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); }
+.answer-controls { display: flex; gap: 9px; margin-top: 8px; }
+#practice-answer { flex: 1; min-width: 0; font-size: 1.2rem; font-weight: 700; text-align: center; }
+#practice-answer::placeholder { color: #91a9bc; font-weight: 400; }
+.answer-form .word-result { text-align: center; }
+@media (max-width: 560px) {
+  .practice-header { justify-content: flex-start; text-align: left; gap: 10px; }
+  .practice-header .brand-logo { width: 58px; height: 58px; }
+  .practice-options { gap: 10px; }
+  .practice-options label { flex: 1; }
+  .practice-options select { width: 100%; }
+  .answer-controls { flex-direction: column; }
+}

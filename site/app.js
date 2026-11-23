@@ -1,6 +1,6 @@
 "use strict";
 
-const DICTIONARY_URL = "./data/words.tsv?v=20261123-1";
+const DICTIONARY_URL = "./data/words.tsv?v=20261123-2";
 const SOURCE_URL = "https://www.openbook.gr/oi-lexeis-2-8-grammaton-scrabble/";
 const ALPHABET = Array.from("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ");
 const GREEK_INDEX = new Map(ALPHABET.map((letter, index) => [letter, index]));
@@ -22,6 +22,7 @@ const startsWithButton = document.querySelector("#starts-with-button");
 const endsWithButton = document.querySelector("#ends-with-button");
 const containsButton = document.querySelector("#contains-button");
 const fixedLetterButton = document.querySelector("#fixed-letter-button");
+const practiceButton = document.querySelector("#practice-button");
 const wordResult = document.querySelector("#word-result");
 const status = document.querySelector("#input-status");
 const resultsPanel = document.querySelector("#anagram-panel");
@@ -485,6 +486,11 @@ startsWithButton.addEventListener("click", () => searchByLetters("starts"));
 endsWithButton.addEventListener("click", () => searchByLetters("ends"));
 containsButton.addEventListener("click", () => searchByLetters("contains"));
 fixedLetterButton.addEventListener("click", findFixedLetterAnagrams);
+practiceButton.addEventListener("click", () => {
+  const practiceUrl = document.querySelector("#embedded-dictionary") ? "./site/practice.html" : "./practice.html";
+  const practiceWindow = window.open(practiceUrl, "scrabble-practice", "popup,width=760,height=760,resizable=yes,scrollbars=yes");
+  if (!practiceWindow) window.open(practiceUrl, "_blank");
+});
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") checkWord();
 });
