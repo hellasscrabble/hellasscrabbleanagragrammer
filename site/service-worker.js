@@ -1,4 +1,4 @@
-const CACHE_NAME = "hellas-scrabble-anagrammer-v43";
+const CACHE_NAME = "hellas-scrabble-anagrammer-v45";
 const APP_FILES = [
   "./",
   "./index.html",

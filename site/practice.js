@@ -1,6 +1,6 @@
 "use strict";
 
-const DICTIONARY_URL = "./data/words.tsv?v=20261124-3";
+const DICTIONARY_URL = "./data/words.tsv?v=20261125-2";
 const alphabet = Array.from("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ");
 const letterCount = document.querySelector("#letter-count");
 const wildcardCount = document.querySelector("#wildcard-count");
